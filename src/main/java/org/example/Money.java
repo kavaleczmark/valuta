@@ -35,13 +35,31 @@ public class Money {
     }
 
     private Money convertMoney(Money moneyToBeAdded) {
-        if (!this.currency.equals(moneyToBeAdded.getCurrency())) { // If the two currency does not match
-            if (this.getCurrency().equals(Currency.getInstance("USD")) && moneyToBeAdded.getCurrency().equals(Currency.getInstance("HUF")))
-                moneyToBeAdded = new Money(moneyToBeAdded.value *0.0027, Currency.getInstance("USD"));
-            else if (this.getCurrency().equals(Currency.getInstance("HUF")) && moneyToBeAdded.getCurrency().equals(Currency.getInstance("USD")))
-                moneyToBeAdded = new Money(moneyToBeAdded.value *363.76, Currency.getInstance("HUF"));
-            else return null;
+        if (this.currency.equals(moneyToBeAdded.getCurrency())) {
+            return moneyToBeAdded;
         }
-        return moneyToBeAdded;
+
+        if (isCurrentUsd() && isToBeAddedHuf(moneyToBeAdded))
+            return new Money(moneyToBeAdded.value *0.0027, Currency.getInstance("USD"));
+        else if (isCurrentHuf() && isToBeAddedUsd(moneyToBeAdded))
+            return new Money(moneyToBeAdded.value *363.76, Currency.getInstance("HUF"));
+
+        return null;
+    }
+
+    private static boolean isToBeAddedUsd(Money moneyToBeAdded) {
+        return moneyToBeAdded.getCurrency().equals(Currency.getInstance("USD"));
+    }
+
+    private boolean isCurrentHuf() {
+        return this.getCurrency().equals(Currency.getInstance("HUF"));
+    }
+
+    private static boolean isToBeAddedHuf(Money moneyToBeAdded) {
+        return moneyToBeAdded.getCurrency().equals(Currency.getInstance("HUF"));
+    }
+
+    private boolean isCurrentUsd() {
+        return this.getCurrency().equals(Currency.getInstance("USD"));
     }
 }
