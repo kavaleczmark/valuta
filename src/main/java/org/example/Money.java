@@ -20,6 +20,13 @@ public class Money {
 
     public Money addMoney(Money moneyToBeAdded) {
         // Convert
+        moneyToBeAdded = convertMoney(moneyToBeAdded);
+        if (moneyToBeAdded == null) return null;
+        this.value += moneyToBeAdded.getValue(); // Add value of the parameter to this.val
+        return this;
+    }
+
+    private Money convertMoney(Money moneyToBeAdded) {
         if (!this.currency.equals(moneyToBeAdded.getCurrency())) { // If the two currency does not match
             if (this.getCurrency().equals(Currency.getInstance("USD")) && moneyToBeAdded.getCurrency().equals(Currency.getInstance("HUF")))
                 moneyToBeAdded = new Money(moneyToBeAdded.value *0.0027, Currency.getInstance("USD"));
@@ -27,18 +34,12 @@ public class Money {
                 moneyToBeAdded = new Money(moneyToBeAdded.value *363.76, Currency.getInstance("HUF"));
             else return null;
         }
-        this.value += moneyToBeAdded.getValue(); // Add value of the parameter to this.val
-        return this;
+        return moneyToBeAdded;
     }
 
     public Integer compareTo(Money m) {
-        if (!this.currency.equals(m.getCurrency())) {
-            if (this.getCurrency().equals(Currency.getInstance("USD")) && m.getCurrency().equals(Currency.getInstance("HUF")))
-                m = new Money(m.value *0.0027, Currency.getInstance("USD"));
-            else if (this.getCurrency().equals(Currency.getInstance("HUF")) && m.getCurrency().equals(Currency.getInstance("USD")))
-                m = new Money(m.value *363.76, Currency.getInstance("HUF"));
-            else return null;
-        }
+        m = convertMoney(m);
+        if (m == null) return null;
         return Double.compare(this.getValue(), m.getValue());
     }
 }
