@@ -26,6 +26,12 @@ public class Money {
         return this;
     }
 
+    public Integer compareTo(Money m) {
+        m = convertMoney(m);
+        if (m == null) return null;
+        return Double.compare(this.getValue(), m.getValue());
+    }
+
     private Money convertMoney(Money moneyToBeAdded) {
         if (!this.currency.equals(moneyToBeAdded.getCurrency())) { // If the two currency does not match
             if (this.getCurrency().equals(Currency.getInstance("USD")) && moneyToBeAdded.getCurrency().equals(Currency.getInstance("HUF")))
@@ -35,11 +41,5 @@ public class Money {
             else return null;
         }
         return moneyToBeAdded;
-    }
-
-    public Integer compareTo(Money m) {
-        m = convertMoney(m);
-        if (m == null) return null;
-        return Double.compare(this.getValue(), m.getValue());
     }
 }
