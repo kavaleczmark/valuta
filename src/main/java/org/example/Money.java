@@ -3,8 +3,10 @@ package org.example;
 import java.util.Currency;
 
 public class Money {
-    public double value;
-    public Currency currency;
+
+    private double value;
+    private Currency currency;
+
     public Money(double value, Currency currency) {
         this.value = value;
         this.currency = currency;
